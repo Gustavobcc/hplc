@@ -17,14 +17,15 @@ foundEnd = False  # boolean pra determinar quando o loop chega ao final do croma
 output = []  # guarda o texto a ser despejado
 
 for file_name in list_of_files:  # loop pelos arquivos
-    fl = open(file_name, 'r')  # abre os arquivos do hplc em modo leitura
-    fl2 = open(os.path.dirname(file_name) + "/proc/" + PurePath(file_name).name, 'w')  # cria novos arquivos em subpasta
+    fl = open(file_name, 'r', encoding='latin-1')  # abre os arquivos do hplc em modo leitura
+    print(file_name)
+    fl2 = open(os.path.dirname(file_name) + "/proc/" + PurePath(file_name).name, 'w', encoding='latin-1')  # cria novos arquivos em subpasta
     for line in fl:
         cnt += 1
         if line.startswith("Acquired\t"):  # procura a linha "Acquired: [data]"
             stamp = line[9:].rstrip()  # obtém a data+hora
             unix = time.mktime(datetime.datetime.strptime(stamp, "%d/%m/%Y %H:%M:%S").timetuple())  # converte pra epoch
-            fl2.write(str(int(unix)))  # escreve a data unix no novo arquivo
+            fl2.write(str(int(unix)) + "\n")  # escreve a data unix no novo arquivo
         if string == line.rstrip():  # procura a string
             print(cnt)  # imprime o número da linha
             linha = cnt+2  # define a var linha como duas linhas a seguir
